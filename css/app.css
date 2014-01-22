@@ -1,0 +1,20 @@
+#app {
+  padding: 0 20px;
+}
+
+header {
+  text-align: center;
+  border-bottom: solid 1px #ccc;
+}
+
+#content {
+  width: 900px;
+  margin: auto;
+  padding: 30px 0;
+}
+
+footer {
+  text-align: center;
+  border-top: solid 1px #ccc;
+  padding-top: 10px;
+}

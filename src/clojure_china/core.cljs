@@ -1,26 +1,24 @@
 (ns clojure-china.core
-  (:require [om.core :as om :include-macros true]
-            [om.dom :as dom :include-macros true]
-            [clojure-china.widgets.app :refer [app-widget]]
+  (:require [reagent.core :as reagent :refer [atom]]
+            [clojure-china.widgets.app :as app :refer [route app-widget]]
             [clojure-china.widgets.tags]))
 
-(enable-console-print!)
-
-(def app-state (atom {}))
-
-(om/root app-state
-         app-widget
-         (.getElementById js/document "app"))
+(defn ^:export run []
+  (reagent/render-component
+   [app-widget]
+   (.getElementById js/document "app")))
 
 (defn set-route!
   ([name] (set-route! name {}))
   ([name params]
-     (swap! app-state assoc :route {:name name :params params})))
+     (reset! app/route {:name name :params params})))
 
 (def routes
   #js {"/" #(set-route! :root)
        "/tags/:id" #(set-route! :tags-show {:id %})})
 
-(.. (js/Router routes)
+(.. (js/Router app/routes)
     (configure #js {:notfound #(set-route! :404)})
     (init "/"))
+
+(run)

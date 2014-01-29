@@ -1,33 +1,33 @@
 (ns clojure-china.widgets.app
-  (:require [om.core :as om :include-macros true]
-            [sablono.core :as html :refer [html] :include-macros true]))
+  (:require [reagent.core :as reagent :refer [atom]]))
+
+(def route (atom nil))
 
 (defmulti render-route
-  (fn [{{name :name} :route}] name)
+  (fn [{name :name}] name)
   :default :404)
 
-(defmethod render-route :root [app]
+(defmethod render-route :root [route]
   [:h1 "index"])
 
-(defmethod render-route :404 [app]
+(defmethod render-route :404 [route]
   [:em "not found"])
 
-(defn header [app]
+(defn header []
   [:header
-   [:h1 "Clojure China"]])
+   [:h1 "Clojure China"]
+   [:h4 (clj->js (str @route))]])
 
-(defn content [app]
+(defn content []
   [:div#content
-   (render-route app)])
+   (render-route @route)])
 
-(defn footer [app]
+(defn footer []
   [:footer
    "footer"])
 
-(defn app-widget [app]
-  (om/component
-   (html
-    [:div
-     (header app)
-     (content app)
-     (footer app)])))
+(defn app-widget []
+  [:div
+   [header]
+   [content]
+   [footer]])

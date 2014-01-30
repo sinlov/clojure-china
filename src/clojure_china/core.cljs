@@ -4,6 +4,7 @@
             [secretary.core :as secretary]
             [clojure-china.widgets.app :as app]
             [clojure-china.widgets.home]
+            [clojure-china.widgets.topics]
             [clojure-china.widgets.tags])
   (:import [goog History]
            [goog.history EventType]))

@@ -1,9 +1,10 @@
 (ns clojure-china.widgets.tags
-  (:require [clojure-china.widgets.app :as app])
+  (:require [clojure-china.widgets.app :as app]
+            [secretary.core :as secretary])
   (:require-macros [secretary.macros :refer [defroute]]))
 
-(defroute "/tags/:id" {:as params}
-  (app/set-route! :tags-show params))
+(defroute "/tags/:name" {:as params}
+  (app/set-route! :tag params))
 
-(defmethod app/render-route :tags-show [{{id :id} :params}]
-  [:h3 id])
+(defmethod app/render-route :tag [{{:keys [name]} :params}]
+  [:h3 name])

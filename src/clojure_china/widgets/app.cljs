@@ -20,12 +20,31 @@
 ;;; app layout
 
 (defn header []
-  [:header
-   [:h1 "Clojure China"]
-   [:h4 (clj->js (str @route))]])
+  (let [route-name (:name @route)]
+    [:div.large-3.columns
+     [:div [:h3 "Clojure China"]]
+     [:div
+      [:a.item
+       {:href "#/topics"
+        :class (if (#{:topics :topic} route-name) "active")}
+       "社区"]
+      [:a.item
+       {:href "#/categories"
+        :class (if (#{:categories :category} route-name) "active")}
+       "分类"]
+      [:a.item
+       {:href "#/users"
+        :class (if (#{:users :user} route-name) "active")}
+       "会员"]]
+     [:code (clj->js (str @route))]
+     [:ul {:style {:list-style "none"}}
+      [:li [:a "上一页"]]
+      [:li [:a "1"]]
+      [:li "..."]
+      [:li [:a "下一页"]]]]))
 
 (defn content []
-  [:div#content
+  [:div#content.large-9.columns
    (render-route @route)])
 
 (defn footer []
@@ -33,7 +52,6 @@
    "footer"])
 
 (defn app-widget []
-  [:div
+  [:div.row
    [header]
-   [content]
-   [footer]])
+   [content]])

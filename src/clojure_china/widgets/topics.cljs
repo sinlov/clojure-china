@@ -37,8 +37,10 @@
 
 (defmethod app/render-route :topics [{{:keys [page] :or {page "1"}} :params}]
   (let [[topics total-pages] (get-topics page)]
-    [:div
-     [:ul#topic-list
-      (for [topic topics]
-        [topic-item {:topic topic, :key (:id topic)}])]
-     [paginator {:page page :total-pages total-pages}]]))
+    [:div.ui.stackable.grid
+     [:div.two.wide.column
+      [paginator {:page page :total-pages total-pages}]]
+     [:div.fourteen.wide.column
+      [:ul#topic-list
+       (for [topic topics]
+         [topic-item {:topic topic, :key (:id topic)}])]]]))

@@ -5,7 +5,7 @@
             [clojure-china.widgets.app :as app]
             [clojure-china.widgets.home]
             [clojure-china.widgets.topics]
-            [clojure-china.widgets.tags])
+            [clojure-china.widgets.categories])
   (:import [goog History]
            [goog.history EventType]))
 

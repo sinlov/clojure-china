@@ -27,21 +27,18 @@
    [:a {:href (str "#/~" author)} author] "发表于" [:span.date (from-now created-at)]])
 
 (defn paginator [{:keys [page total-pages topics]}]
-  (let [title (str "共" total-pages "页")
+  (let [link-fn (fn [link-page html visible]
+                  [:a.tiny.radius.button
+                   {:href (str "#/topics/page/" link-page)
+                    :title (str "共" total-pages "页")
+                    :dangerouslySetInnerHTML {:__html html}
+                    :style {:visibility (if visible "visible" "hidden")}}])
         prev? (> page 1)
         next? (< page total-pages)]
     [:div.paginator
-     (if prev?
-       [:a.tiny.radius.button
-        {:href (str "#/topics/page/" (dec page))
-         :title title
-         :dangerouslySetInnerHTML {:__html "&laquo;"}}])
-     (if (and prev? next?) [:br])
-     (if next?
-       [:a.tiny.radius.button
-        {:href (str "#/topics/page/" (inc page))
-         :title title
-         :dangerouslySetInnerHTML {:__html "&raquo;"}}])]))
+     (link-fn (dec page) "&laquo;" prev?)
+     [:br]
+     (link-fn (inc page) "&raquo;" next?)]))
 
 (defn parse-page [page]
   (let [i (js/parseInt page 10)]

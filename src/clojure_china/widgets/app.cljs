@@ -19,39 +19,37 @@
 
 ;;; app layout
 
-(defn header []
+(defn header [sider]
   (let [route-name (:name @route)]
     [:div.large-3.columns
      [:div [:h3 "Clojure China"]]
-     [:div
-      [:a.item
-       {:href "#/topics"
-        :class (if (#{:topics :topic} route-name) "active")}
-       "社区"]
-      [:a.item
-       {:href "#/categories"
-        :class (if (#{:categories :category} route-name) "active")}
-       "分类"]
-      [:a.item
-       {:href "#/users"
-        :class (if (#{:users :user} route-name) "active")}
-       "会员"]]
-     [:code (clj->js (str @route))]
-     [:ul {:style {:list-style "none"}}
-      [:li [:a "上一页"]]
-      [:li [:a "1"]]
-      [:li "..."]
-      [:li [:a "下一页"]]]]))
-
-(defn content []
-  [:div#content.large-9.columns
-   (render-route @route)])
+     [:dl.sub-nav
+      [:dd.active
+       [:a.current
+        {:href "#/topics"
+         :class (if (#{:topics :topic} route-name) "active")}
+        "社区"]]
+      [:dd
+       [:a.item
+        {:href "#/categories"
+         :class (if (#{:categories :category} route-name) "active")}
+        "分类"]]
+      [:dd
+       [:a.item
+        {:href "#/users"
+         :class (if (#{:users :user} route-name) "active")}
+        "会员"]]]
+     sider]))
 
 (defn footer []
   [:footer
    "footer"])
 
 (defn app-widget []
-  [:div.row
-   [header]
-   [content]])
+  (let [content (render-route @route)
+        sider (if (map? content) (:sider content))
+        content (if (map? content) (:content content) content)]
+    [:div.row
+     (header sider)
+     [:div#content.large-9.columns
+      content]]))
